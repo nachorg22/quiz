@@ -24,7 +24,11 @@
       <nav class="main" role="navigation">
         <a href="/">Inicio</a>
         <a href="/question">Preguntas</a>
-        <a href="/creditos">Página de créditos</a>
+<<<<<<< HEAD
+        <a href="/author">Página de créditos</a>
+=======
+
+>>>>>>> c4d76e701e0cd137322aef869f3173a57c9a3f55
       </nav>
 
       <section class="main">

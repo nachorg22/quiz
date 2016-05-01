@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Quiz</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-  <h2>Quiz: el juego de las preguntas</h2>
+  <p>La respuesta <strong> <%= answer %> </strong> es <%= result %>.</p>
+<<<<<<< HEAD
 
-  <p>
-     La respuesta <strong> <%= answer %> </strong> es <%= result %>.
-  </p>
+  <p><a href="/question?answer=<%= answer %>"> Inténtelo otra vez </a></p>
 
-  <p>
-     <a href="/question?answer=<%= answer %>"> Inténtelo otra vez </a>
-  </p>
+=======
+  <p><a href="/question?answer=<%= answer %>"> Inténtelo otra vez </a></p>
 
-  </body>
-</html>
+>>>>>>> c4d76e701e0cd137322aef869f3173a57c9a3f55
