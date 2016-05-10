@@ -10,7 +10,7 @@ var Sequelize = require('sequelize');
 // Usar BBDD Postgres:
 //    DATABASE_URL = postgres://user:passwd@host:port/database
 
-var url, storage;
+/*var url, storage;
 
 if (!process.env.DATABASE_URL) {
     url = "sqlite:///";
@@ -23,7 +23,13 @@ if (!process.env.DATABASE_URL) {
 var sequelize = new Sequelize(url, 
 	 						  { storage: storage,
 				              	omitNull: true 
-				              });
+				              });*/
+
+// Usar BBDD SQLite:
+var sequelize = new Sequelize(null, null, null,
+		{ dialect: "sqlite", storage: "quiz.sqlite" });
+
+
 
 // Importar la definicion de la tabla Quiz de quiz.js
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));

@@ -4,17 +4,18 @@ var router = express.Router();
 var quizController = require('../controllers/quiz_controller');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+/*router.get('/', function(req, res, next) {
   res.render('index');
-<<<<<<< HEAD
-});
+
+});*/
 router.get('/author', function(req, res, next) {
   res.render('author');
-=======
->>>>>>> c4d76e701e0cd137322aef869f3173a57c9a3f55
+
 });
 
-router.get('/question', quizController.question);
-router.get('/check', quizController.check);
+// Definición de rutas de /quizzes
+router.get('/quizzes',                     quizController.index);
+router.get('/quizzes/:quizId(\\d+)',       quizController.show);
+router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
 
 module.exports = router;
