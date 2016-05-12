@@ -23,22 +23,37 @@ var Sequelize = require('sequelize');
 
 // GET /quizzes
 exports.index = function(req, res, next) {
-		if(!req.query.search){
-	 		models
-	 		.Quiz 
-	 		.findAll() //Busca la primera pregunta
-	 		.then (function(quizzes) {
-	 			res.render('quizzes/index.ejs', {quizzes: quizzes})
-	 		}).catch(function(error) { next(error); });
-	 	}else {
+		
+ 	var format = req.params.format || ".html";
+ 
+ 	if (format === '.html'){
+ 		if(!req.query.search){
+ 			models.Quiz.findAll() //Busca la primera pregunta
+ 			.then (function(quizzes) {
+ 				res.render('quizzes/index.ejs', {quizzes: quizzes})
+ 			}).catch(function(error) { next(error); });
+ 		}else {
  			models.Quiz.findAll({
-	 			where: ["question like ?", "%" + req.query.search.split(" ").join("%") + "%"]
-	 		}).then(function(quizzes){
-	 			var busqueda = req.query.search;
-	         	res.render( 'quizzes/index', { quizzes: quizzes.sort(), busqueda: busqueda});
-	 		}).catch(function(error) { next(error); });
- 	}
-  };
+ 				where: ["question like ?", "%" + req.query.search.split(" ").join("%") + "%"]
+ 			}).then(function(quizzes){
+ 				var busqueda = req.query.search;
+ 	        	res.render( 'quizzes/index', { quizzes: quizzes.sort(), busqueda: busqueda});
+ 			}).catch(function(error) { next(error); });
+ 		}
+ 
+ 	}else if (format === '.json'){
+ 		models.Quiz.findAll()
+ 		.then(function(quizzes){
+ 			res.send(JSON.stringify(quizzes));
+ 		}).catch(function(error){
+ 			req.flash('error', 'Error al solicitar el JSON del Quiz');
+ 			next(error);
+ 		});
+  	}else {
+ 		next( new Error('Error de formato'));
+  	}
+
+};
 	
 
 
@@ -46,7 +61,29 @@ exports.index = function(req, res, next) {
 
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
-	models.Quiz.findById(req.params.quizId)
+
+ 	var format = req.params.format || ".html";
+ 	var answer = req.query.answer || '';
+
+
+ 	if (format === '.html'){
+ 		res.render('quizes/show', {	quiz: req.quiz,
+ 									answer : answer});
+ 
+ 	}else if (format === '.json'){
+ 		models.Quiz.findAll(
+ 		).then(function(quizes){
+ 			res.send(JSON.stringify(req.quiz));
+ 		}).catch(function(error){
+ 			req.flash('error', 'Error al solicitar el JSON del Quiz');
+ 			next(error);
+ 		});
+ 
+ 	}else {
+ 		next( new Error('Error de formato'));
+ 	}
+
+/*	models.Quiz.findById(req.params.quizId)
 		.then(function(quiz) {
 			if (quiz) {
 				var answer = req.query.answer || '';
@@ -59,7 +96,7 @@ exports.show = function(req, res, next) {
 		})
 		.catch(function(error) {
 			next(error);
-		});
+		});*/
 };
 
 
