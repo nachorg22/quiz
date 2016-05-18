@@ -11,7 +11,7 @@ var Sequelize = require('sequelize');
          		req.quiz = quiz;
          		next();
        		} else {
-       			throw new Error('No existe quizId=' + quizId);
+       			next(new Error('No existe quizId=' + quizId));
        		}
          })
          .catch(function(error) { next(error); });
@@ -67,12 +67,12 @@ exports.show = function(req, res, next) {
 
 
  	if (format === '.html'){
- 		res.render('quizes/show', {	quiz: req.quiz,
+ 		res.render('quizzes/show', {	quiz: req.quiz,
  									answer : answer});
  
  	}else if (format === '.json'){
  		models.Quiz.findAll(
- 		).then(function(quizes){
+ 		).then(function(quizzes){
  			res.send(JSON.stringify(req.quiz));
  		}).catch(function(error){
  			req.flash('error', 'Error al solicitar el JSON del Quiz');
