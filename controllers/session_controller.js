@@ -22,6 +22,50 @@ exports.loginRequired = function (req, res, next) {
     }
 };
 
+// MW que permite gestionar solamente si el usuario logeado es admin.
+/*exports.adminRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+
+    if (isAdmin) {
+        next();
+    } else {
+      console.log('Ruta prohibida: el usuario logeado no es administrador.');
+      res.send(403);    }
+};*/
+
+// MW que permite gestionar un usuario solamente si el usuario logeado es:
+//   - admin 
+//   - o es el usuario a gestionar.
+exports.adminOrMyselfRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+    var userId       = req.user.id;
+    var loggedUserId = req.session.user.id;
+
+    if (isAdmin || userId === loggedUserId) {
+        next();
+    } else {
+      console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
+      res.send(403);    }
+};
+
+// MW que permite gestionar un usuario solamente si el usuario logeado es:
+//   - admin
+//   - y no es el usuario a gestionar.
+exports.adminAndNotMyselfRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+    var userId       = req.user.id;
+    var loggedUserId = req.session.user.id;
+
+    if (isAdmin || userId === loggedUserId) {
+        next();
+    } else {
+      console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
+      res.send(403);    }
+};
+
 
 /*
  * Autenticar un usuario: Comprueba si el usuario esta registrado en users
@@ -74,7 +118,7 @@ exports.create = function(req, res, next) {
                 var t1 = t.getTime();
                 // Crear req.session.user y guardar campos id y username
                 // La sesión se define por la existencia de: req.session.user
-                req.session.user = {id:user.id, username:user.username, tiempo: t1};
+                req.session.user = {id:user.id, username:user.username, isAdmin:user.isAdmin, tiempo: t1};
 
                 res.redirect(redir); // redirección a redir
             } else {
